@@ -1,49 +1,20 @@
-export const CREATE_ORDER = "CREATE_ORDER";
-export const CANCEL_ORDER = "CANCEL_ORDER";
-export const ON_RAMP = "ON_RAMP";
-export const GET_OPEN_ORDERS = "GET_OPEN_ORDERS";
+import express from "express";
+import cors from "cors";
 
-export const GET_DEPTH = "GET_DEPTH";
+import { rootRouter } from "./routes/index";
 
-export type MessageFromOrderbook =
-  | {
-      type: "DEPTH";
-      payload: {
-        market: string;
-        bids: [string, string][];
-        asks: [string, string][];
-      };
-    }
-  | {
-      type: "ORDER_PLACED";
-      payload: {
-        orderId: string;
-        executedQty: number;
-        fills: [
-          {
-            price: string;
-            qty: number;
-            tradeId: number;
-          }
-        ];
-      };
-    }
-  | {
-      type: "ORDER_CANCELLED";
-      payload: {
-        orderId: string;
-        executedQty: number;
-        remainingQty: number;
-      };
-    }
-  | {
-      type: "OPEN_ORDERS";
-      payload: {
-        orderId: string;
-        executedQty: number;
-        price: string;
-        quantity: string;
-        side: "buy" | "sell";
-        userId: string;
-      }[];
-    };
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/v1", rootRouter);
+
+app.get("/api/v1/health", (req, res) => {
+  res.json({
+    status: "We are running",
+  });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});

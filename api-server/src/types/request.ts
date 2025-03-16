@@ -4,7 +4,7 @@ import {
   GET_DEPTH,
   GET_OPEN_ORDERS,
   ON_RAMP,
-} from "./index";
+} from "./response";
 
 export type MessageToEngine =
   | {
